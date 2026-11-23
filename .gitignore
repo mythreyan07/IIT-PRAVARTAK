@@ -45,11 +45,14 @@ hf_token*
 *.hf_token
 
 # Large model checkpoints (use Git LFS or model registries instead)
-*.pt
-*.pth
-*.bin
-*.ckpt
-*.safetensors
+# Keep the directory structure but not the actual weights
+checkpoints/**/*.pt
+checkpoints/**/*.pth
+checkpoints/**/*.bin
+checkpoints/**/*.ckpt
+checkpoints/**/*.safetensors
+!checkpoints/.gitkeep
+!reports/.gitkeep
 
 # Dataset downloads (keep download scripts, not raw data)
 data/downloads/
@@ -74,6 +77,11 @@ metadata/
 # Windows
 Thumbs.db
 desktop.ini
+
+# Reports (generated outputs — keep directory structure only)
+reports/*.json
+reports/*.pdf
+!reports/.gitkeep
 
 # Logs
 *.log
