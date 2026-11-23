@@ -1,0 +1,84 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+*.xml
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment / secrets
+.env
+.env.*
+*.env
+secrets.json
+credentials.json
+*.key
+*.pem
+
+# Hugging Face tokens and model caches
+.huggingface/
+huggingface_cache/
+hf_token*
+*.hf_token
+
+# Large model checkpoints (use Git LFS or model registries instead)
+*.pt
+*.pth
+*.bin
+*.ckpt
+*.safetensors
+
+# Dataset downloads (keep download scripts, not raw data)
+data/downloads/
+data/raw_datasets/
+*.tar.gz
+*.zip
+*.h5
+*.hdf5
+*.pkl
+
+# Temporary processing files
+data/processed/
+data/original/
+metadata/
+
+# Streamlit
+.streamlit/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
