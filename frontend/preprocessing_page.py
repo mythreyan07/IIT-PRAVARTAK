@@ -153,9 +153,9 @@ def render_preprocessing_page() -> None:
 
     # Status banner
     st.header("3. Processing Status")
-    if result.status == "completed":
+    if result.preprocessing_status == "completed":
         st.success(f"Status: Completed — Pair ID: `{result.image_pair_id}`")
-    elif result.status == "unreliable":
+    elif result.preprocessing_status == "unreliable":
         st.warning(
             f"Status: Unreliable — alignment could not be verified. "
             f"Pair ID: `{result.image_pair_id}`"

@@ -98,7 +98,7 @@ class TestPreprocessingPipelineValid:
 
         result = pipeline.process_image_pair(before_path, after_path, image_pair_id="PAIR_TEST")
         # Status should be completed or unreliable (alignment may not succeed on random noise)
-        assert result.status in {"completed", "unreliable"}
+        assert result.preprocessing_status in {"completed", "unreliable"}
         assert result.image_pair_id == "PAIR_TEST"
 
     def test_original_images_preserved(self, tmp_path, config):
@@ -153,7 +153,7 @@ class TestPreprocessingPipelineErrors:
             str(tmp_path / "nonexistent.jpg"),
             str(tmp_path / "also_missing.jpg"),
         )
-        assert result.status == "failed"
+        assert result.preprocessing_status == "failed"
         assert len(result.errors) > 0
 
     def test_corrupted_file_fails(self, tmp_path, config):
@@ -163,7 +163,7 @@ class TestPreprocessingPipelineErrors:
         p2.write_bytes(b"also not")
         pipeline = PreprocessingPipeline(config)
         result = pipeline.process_image_pair(str(p1), str(p2))
-        assert result.status == "failed"
+        assert result.preprocessing_status == "failed"
 
     def test_poor_quality_rejection_configurable(self, tmp_path, config):
         """
@@ -177,7 +177,7 @@ class TestPreprocessingPipelineErrors:
         cv2.imwrite(str(p_dark), dark)
         normal = _write_test_image(tmp_path, "normal.jpg", seed=42)
         result = pipeline.process_image_pair(str(p_dark), normal)
-        assert result.status == "failed"
+        assert result.preprocessing_status == "failed"
 
 
 # ---------------------------------------------------------------------------
@@ -198,7 +198,7 @@ class TestAnnotationTransformation:
             image_pair_id="PAIR_ANN",
             annotations_before=anns,
         )
-        assert result.status in {"completed", "unreliable"}
+        assert result.preprocessing_status in {"completed", "unreliable"}
 
 
 # ---------------------------------------------------------------------------
@@ -220,5 +220,5 @@ class TestAlignedCheckerboard:
         result = pipeline.process_image_pair(
             before_path, after_path, image_pair_id="PAIR_CB"
         )
-        assert result.status in {"completed", "unreliable"}
+        assert result.preprocessing_status in {"completed", "unreliable"}
         assert result.image_pair_id == "PAIR_CB"

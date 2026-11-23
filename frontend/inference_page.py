@@ -76,7 +76,7 @@ def _run_inference(before_file, after_file, seg_ckpt, cls_ckpt, disaster_type, u
         prep_result = pipeline.process_image_pair(before_tmp, after_tmp)
         st.session_state["inf_prep_result"] = prep_result
 
-        if prep_result.status == "failed":
+        if prep_result.preprocessing_status == "failed":
             st.error(f"Preprocessing failed: {prep_result.errors}")
             return
 

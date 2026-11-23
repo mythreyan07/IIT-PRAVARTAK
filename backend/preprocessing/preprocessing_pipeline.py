@@ -73,7 +73,7 @@ class PreprocessingConfig:
 @dataclass
 class PipelineResult:
     image_pair_id: str
-    status: str  # 'completed', 'failed', 'unreliable'
+    preprocessing_status: str  # 'completed', 'failed', 'unreliable'
     warnings: List[str] = field(default_factory=list)
     errors: List[str] = field(default_factory=list)
 
@@ -150,7 +150,7 @@ class PreprocessingPipeline:
         Returns a PipelineResult; also saves metadata JSON to disk.
         """
         pair_id = image_pair_id or _generate_pair_id()
-        result = PipelineResult(image_pair_id=pair_id, status="in_progress")
+        result = PipelineResult(image_pair_id=pair_id, preprocessing_status="in_progress")
         cfg = self.config
 
         # --- Step 1: Preserve originals ---
@@ -211,7 +211,7 @@ class PreprocessingPipeline:
         result.warnings.extend(align_result.get("warnings", []))
 
         if align_result["method"] == "FAILED":
-            result.status = "unreliable"
+            result.preprocessing_status = "unreliable"
             result.alignment_status = "failed"
             result.errors.append(
                 "Image registration failed — pair is unreliable for building-level comparison."
@@ -242,8 +242,8 @@ class PreprocessingPipeline:
             result.warnings.append(
                 f"Post-alignment verification failed: {verify['explanation']}"
             )
-            if result.status != "unreliable":
-                result.status = "unreliable"
+            if result.preprocessing_status != "unreliable":
+                result.preprocessing_status = "unreliable"
                 result.errors.append("Alignment verification failed — pair flagged as unreliable.")
                 self._save_metadata(result)
                 return result
@@ -288,9 +288,9 @@ class PreprocessingPipeline:
                 result.warnings.append(f"Annotation transform (after) failed: {exc}")
 
         # --- Done ---
-        result.status = "completed"
+        result.preprocessing_status = "completed"
         self._save_metadata(result)
-        logger.info("Pipeline completed for pair %s — status=%s", pair_id, result.status)
+        logger.info("Pipeline completed for pair %s — status=%s", pair_id, result.preprocessing_status)
         return result
 
     # ------------------------------------------------------------------
@@ -312,7 +312,7 @@ class PreprocessingPipeline:
             Path(d).mkdir(parents=True, exist_ok=True)
 
     def _fail(self, result: PipelineResult, reason: str) -> PipelineResult:
-        result.status = "failed"
+        result.preprocessing_status = "failed"
         result.errors.append(reason)
         logger.error("Pipeline failed for pair %s: %s", result.image_pair_id, reason)
         self._save_metadata(result)
